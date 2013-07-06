@@ -17,9 +17,9 @@ LOG_FILE="/tmp/debian7postinstall-$DATE.log"
 # Configuration #
 #################
 
-KERNEL_VERSION = "3.8.13"
-KERNEL_URL = "https://github.com/fabrik4web/debian-post-install/blob/master/kernel"
-CONFIG_URL = "https://github.com/fabrik4web/debian-post-install/blob/master/config"
+KERNEL_VERSION="3.8.13"
+KERNEL_URL="https://github.com/fabrik4web/debian-post-install/blob/master/kernel"
+CONFIG_URL="https://github.com/fabrik4web/debian-post-install/blob/master/config"
 
 ######################################
 # Fonctions utilisées dans le script #
@@ -71,8 +71,6 @@ if [ $EUID -ne 0 ]; then
   showerrorandexit 1 "Le script doit être lancé en root !"
 fi
 
-if 
-
 # Configuration pour pouvoir envoyer des mails lors de l'installation
 #--------------------------------------------------------------------
 
@@ -82,8 +80,8 @@ showtxt "## Configuration pour pouvoir envoyer des mails lors de l'installation 
 showtxt "#########################################################################"
 showtxt ""
 
-showandexec "Téléchargement et mise en place du fichier update-exim4.conf.conf" '$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf'
-showandexec "Redémarrage d'exim4" '/etc/initd.d/exim4 restart'
+showandexec "Téléchargement et mise en place du fichier update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf"
+showandexec "Redémarrage d'exim4" "/etc/initd.d/exim4 restart"
 
 # Gestion des dépots et mise à jour
 #----------------------------------
@@ -94,10 +92,10 @@ showtxt "## Gestion des dépots et mise à jour ##"
 showtxt "#######################################"
 showtxt ""
 
-showandexec "Téléchargement et mise en place du fichier sources.list" '$WGET -O /etc/apt/sources.list $CONFIG_URL/sources.list'
+showandexec "Téléchargement et mise en place du fichier sources.list" "$WGET -O /etc/apt/sources.list $CONFIG_URL/sources.list"
 showandexec "Installation clés du dépôt Dotdeb" "$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
-showandexec "Mise à jour de la liste des dépots" $APT_GET update
-showandexec "Mise à jour des logiciels" $APT_GET upgrade
+showandexec "Mise à jour de la liste des dépots" "$APT_GET update"
+showandexec "Mise à jour des logiciels" "$APT_GET upgrade"
 
 # Fini :)
 #--------
