@@ -1,20 +1,20 @@
 #!/bin/bash
-# Script post-installation pour Debian 7 (Wheezy)
+# Script post-install for Debian 7 (Wheezy)
 #
 # Benoit Ponthieu / Fabrik4Web SAS - 06/2013
 
-######################
-# Variables Globales #
-######################
+####################
+# Global Variables #
+####################
 
 HOME_PATH=`grep $USERNAME /etc/passwd | cut -d: -f6`
 APT_GET="apt-get -q -y --force-yes"
 WGET="wget -m --no-check-certificate"
-DATE=`date +"%Y-%m-%d_%H%M%S"`
+DATE=`date +"%Y%m%d_%H%M%S"`
 LOG_FILE="/tmp/debian7postinstall-$DATE.log"
 
 #################
-# Configuration #
+# Functions used in the script #
 #################
 
 KERNEL_VERSION="3.8.13"
@@ -42,7 +42,7 @@ showerrorandexit() {
 
 showandexec() {
   local message=$1
-  echo -n "[En cours] $message"
+  echo -n "[In progress] $message"
   shift
   echo ">>> $*" >> $LOG_FILE 2>&1
   sh -c "$*" >> $LOG_FILE 2>&1
@@ -59,45 +59,60 @@ showandexec() {
 # Prrogramme #
 ##############
 
-# Création du fichier de log
-#---------------------------
+# Create log file
+#----------------
 
-echo "Debut du script" > $LOG_FILE
+echo "Start of the script" > $LOG_FILE
 
-# On teste si le script est bien exécuter en tant que root
-#---------------------------------------------------------
+# It tests whether the script is running as root
+#-----------------------------------------------
 
 if [ $EUID -ne 0 ]; then
-  showerrorandexit 1 "Le script doit être lancé en root"
+  showerrorandexit 1 "The script must be run as root"
 fi
 
-# Configuration pour pouvoir envoyer des mails lors de l'installation
-#--------------------------------------------------------------------
+# Changing the kernel with a patched kernel GRSecurity
+# ----------------------------------------------------
 
 showtxt ""
-showtxt "#########################################################################"
-showtxt "## Configuration pour pouvoir envoyer des mails lors de l'installation ##"
-showtxt "#########################################################################"
+showtxt "##########################################################"
+showtxt "## Changing the kernel with a patched kernel GRSecurity ##"
+showtxt "##########################################################"
 showtxt ""
 
-showandexec "Téléchargement et mise en place du fichier update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf.conf"
-showandexec "Redémarrage d'exim4" "/etc/init.d/exim4 restart"
+showandexec "Download and installation of the file System.map-$KERNEL_VERSION-xxxx-std-ipv6-64" "$WGET -O /etc/boot/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64 $KERNEL_URL/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64"
+showandexec "Download and installation of the file bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64" "$WGET -O /etc/exim4/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64 $CONFIG_URL/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64"
+showandexec "Download and installation of the file 06_CustomKernel" "$WGET -O /etc/grud.d/06_CustomKernel $CONFIG_URL/06_CustomKernel"
+showandexec "Application rights of the file 06_CustomeKernel" "chmod a+x /etc/grud.d/06_CustomKernel"
+showandexec "Update grub" "update-grub"
 
-# Gestion des dépots et mise à jour
-#----------------------------------
+# Configuring exim4 can post messages during installation
+#--------------------------------------------------------
 
 showtxt ""
-showtxt "#######################################"
-showtxt "## Gestion des dépots et mise à jour ##"
-showtxt "#######################################"
+showtxt "#############################################################"
+showtxt "## Configuring exim4 can post messages during installation ##"
+showtxt "#############################################################"
 showtxt ""
 
-showandexec "Téléchargement et mise en place du fichier sources.list" "$WGET -O /etc/apt/sources.list $CONFIG_URL/sources.list"
-showandexec "Installation clés du dépôt Dotdeb" "$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
-showandexec "Mise à jour de la liste des dépots" "$APT_GET update"
-showandexec "Mise à jour des logiciels" "$APT_GET upgrade"
+showandexec "Download and installation of the file update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf.conf"
+showandexec "Restart Exim4" "/etc/init.d/exim4 restart"
 
-# Fini :)
-#--------
+# Management repositories and update
+#-----------------------------------
 
-echo "Fin du script" >> $LOG_FILE
+showtxt ""
+showtxt "########################################"
+showtxt "## Management repositories and update ##"
+showtxt "########################################"
+showtxt ""
+
+showandexec "Download and installation of the file sources.list" "$WGET -O /etc/apt/sources.list $CONFIG_URL/sources.list"
+showandexec "Installation of the key deposit Dotdeb" "$WGET -O - http://www.dotdeb.org/dotdeb.gpg | apt-key add -"
+showandexec "Update the list of the deposits" "$APT_GET update"
+showandexec "Updating software" "$APT_GET upgrade"
+
+# The end :)
+#-----------
+
+echo "End of the script" >> $LOG_FILE
