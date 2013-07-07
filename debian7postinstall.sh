@@ -80,10 +80,10 @@ showtxt "## Changing the kernel with a patched kernel GRSecurity ##"
 showtxt "##########################################################"
 showtxt ""
 
-showandexec "Download and installation of the file System.map-$KERNEL_VERSION-xxxx-std-ipv6-64" "$WGET -O /etc/boot/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64 $KERNEL_URL/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64"
-showandexec "Download and installation of the file bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64" "$WGET -O /etc/exim4/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64 $CONFIG_URL/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64"
-showandexec "Download and installation of the file 06_CustomKernel" "$WGET -O /etc/grud.d/06_CustomKernel $CONFIG_URL/06_CustomKernel"
-showandexec "Application rights of the file 06_CustomeKernel" "chmod a+x /etc/grud.d/06_CustomKernel"
+showandexec "Download and installation of the file System.map-$KERNEL_VERSION-xxxx-std-ipv6-64" "$WGET -O /boot/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64 $KERNEL_URL/System.map-$KERNEL_VERSION-xxxx-std-ipv6-64"
+showandexec "Download and installation of the file bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64" "$WGET -O /boot/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64 $KERNEL_URL/bzImage-$KERNEL_VERSION-xxxx-grs-ipv6-64"
+showandexec "Download and installation of the file 06_CustomKernel" "$WGET -O /etc/grub.d/06_CustomKernel $CONFIG_URL/06_CustomKernel"
+showandexec "Application rights of the file 06_CustomeKernel" "chmod a+x /etc/grub.d/06_CustomKernel"
 showandexec "Update grub" "update-grub"
 
 # Configuring exim4 can post messages during installation
