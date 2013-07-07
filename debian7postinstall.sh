@@ -86,13 +86,13 @@ showandexec "Download and installation of the file 06_CustomKernel" "$WGET -O /e
 showandexec "Application rights of the file 06_CustomeKernel" "chmod a+x /etc/grub.d/06_CustomKernel"
 showandexec "Update grub" "update-grub"
 
-# Configuring exim4 can post messages during installation
-#--------------------------------------------------------
+#  Configuring exim4 can send emails during installation
+#-------------------------------------------------------
 
 showtxt ""
-showtxt "#############################################################"
-showtxt "## Configuring exim4 can post messages during installation ##"
-showtxt "#############################################################"
+showtxt "############################################################"
+showtxt "##  Configuring exim4 can send emails during installation ##"
+showtxt "############################################################"
 showtxt ""
 
 showandexec "Download and installation of the file update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf.conf"
