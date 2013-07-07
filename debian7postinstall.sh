@@ -80,8 +80,8 @@ showtxt "## Configuration pour pouvoir envoyer des mails lors de l'installation 
 showtxt "#########################################################################"
 showtxt ""
 
-showandexec "Téléchargement et mise en place du fichier update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf"
-showandexec "Redémarrage d'exim4" "/etc/initd.d/exim4 restart"
+showandexec "Téléchargement et mise en place du fichier update-exim4.conf.conf" "$WGET -O /etc/exim4/update-exim4.conf $CONFIG_URL/update-exim4.conf.conf"
+showandexec "Redémarrage d'exim4" "/etc/init.d/exim4 restart"
 
 # Gestion des dépots et mise à jour
 #----------------------------------
