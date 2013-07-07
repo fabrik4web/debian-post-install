@@ -19,7 +19,7 @@ LOG_FILE="/tmp/debian7postinstall-$DATE.log"
 
 KERNEL_VERSION="3.8.13"
 KERNEL_URL="https://raw.github.com/fabrik4web/debian-post-install/master/kernel"
-CONFIG_URL="https://raw.github.com/fabrik4web/debian-post-install/blob/master/config"
+CONFIG_URL="https://raw.github.com/fabrik4web/debian-post-install/master/config"
 
 ######################################
 # Fonctions utilisées dans le script #
